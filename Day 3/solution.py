@@ -36,7 +36,9 @@ print(delta)
 solution = int(gamma, 2) * int(delta, 2)
 print(f'Power Consumption: {solution}')
 
-## Part 2 NOT WORKING YET
+## Part 2
+
+# Oxygen Generator Rating
 def o2(input, start_index):
     length = len(input)
     
@@ -46,20 +48,25 @@ def o2(input, start_index):
     zero = 0
     one = 0
 
+    # Determination of the most common bit    
     for line in input:
         if line[start_index] == '0':
             zero += 1
         else:
             one += 1
-        
-    if zero > one:
+
+    if one > zero:
         new_input = [x for x in input if x[start_index] != '0']
         return o2(new_input, start_index + 1)
-
-    else:
+    elif zero > one:
         new_input = [x for x in input if x[start_index] != '1']
         return o2(new_input, start_index + 1)
+    else:
+        new_input = [x for x in input if x[start_index] != '0']
+        return o2(new_input, start_index + 1)
+    
 
+# CO2 Scrubber Rating
 def co(input, start_index):
     length = len(input)
     
@@ -74,11 +81,13 @@ def co(input, start_index):
             zero += 1
         else:
             one += 1
-        
+    
     if zero < one:
+        new_input = [x for x in input if x[start_index] != '1']
+        return co(new_input, start_index + 1)
+    elif zero > one:
         new_input = [x for x in input if x[start_index] != '0']
         return co(new_input, start_index + 1)
-
     else:
         new_input = [x for x in input if x[start_index] != '1']
         return co(new_input, start_index + 1)
