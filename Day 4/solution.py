@@ -28,21 +28,36 @@ sliced_arrs = list(chunks(lines, 5))
 found = False
 
 for drawn_number in numbers:
-    for arr in sliced_arrs:
-        boards = np.reshape(arr, (1, 5))
+    if found == True:
+        break
+    for board_index, board in enumerate(sliced_arrs):
+        col_numbers = []
+        if found == True:
+            break
+        for row_index, row in enumerate(board):
+                
+            # Winning condition
+            if row == 'x x x x x':
+                remaining_numbers = []
+                for x in board:
+                    for y in x.split():
+                        if y != 'x':
+                            remaining_numbers.append(y)
+                solution = sum(map(int, remaining_numbers)) * int(drawn_number)
+                print(solution)
+                found = True
+                break
 
-        for board_index, board in enumerate(boards):
-            col_numbers = []
-            for row_index, row in enumerate(board):
-                for col_index, num in enumerate(row.split()):
-                    if col_index == 0:
-                        col_numbers.append(num)
+            for col_index, num in enumerate(row.split()):
+                if col_index == 0:
+                    col_numbers.append(num)
 
-                    if num == drawn_number:
-                        # Update the game board
-                        row = ' '.join(['x' if x == drawn_number else x for x in row.split()]).strip()
-                        board[row_index] = row
-                        boards[board_index] = board
+                if num == drawn_number:
+                    # Update the game board
+                    row = ' '.join(['x' if x == drawn_number else x for x in row.split()]).strip()
+                    board[row_index] = row
+                    sliced_arrs[board_index] = board
+
             
 
         
