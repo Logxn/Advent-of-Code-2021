@@ -27,31 +27,23 @@ wizzard = []
 sliced_arrs = list(chunks(lines, 5))
 found = False
 
-for i in range(len(numbers)):
-    if found:
-        break
-
-    wizzard.append(numbers[i])
-
+for drawn_number in numbers:
     for arr in sliced_arrs:
-        if found:
-            break
         boards = np.reshape(arr, (1, 5))
-        
-        # Board-Logic
-        # Loop over all boards
-        for board in boards:
-            for row_index in range(len(board)):
-                row_numbers = board[row_index].split()
-                for row_number_index in range(len(row_numbers)):
-                    if row_numbers[row_number_index] == wizzard[i]:
-                        row_numbers[row_number_index] = 'x'
-                
-                board[row_index] = ' '.join(row_numbers)
+
+        for board_index, board in enumerate(boards):
+            col_numbers = []
+            for row_index, row in enumerate(board):
+                for col_index, num in enumerate(row.split()):
+                    if col_index == 0:
+                        col_numbers.append(num)
+
+                    if num == drawn_number:
+                        # Update the game board
+                        row = ' '.join(['x' if x == drawn_number else x for x in row.split()]).strip()
+                        board[row_index] = row
+                        boards[board_index] = board
             
-            # Row Check
-            if any(elem == 'x x x x x' for elem in board):
-                print('Bingo!')
 
         
 
