@@ -25,44 +25,27 @@ numbers = [re.sub('\n', '', x) for x in numbers]
 
 wizzard = []
 sliced_arrs = list(chunks(lines, 5))
-found = False
 
-for drawn_number in numbers:
-    if found == True:
-        break
-    for board_index, board in enumerate(sliced_arrs):
-        col_numbers = []
-        if found == True:
-            break
-        for row_index, row in enumerate(board):
-                
-            # Winning condition
-            if row == 'x x x x x':
-                remaining_numbers = []
-                for x in board:
-                    for y in x.split():
-                        if y != 'x':
-                            remaining_numbers.append(y)
-                solution = sum(map(int, remaining_numbers)) * int(drawn_number)
-                print(solution)
-                found = True
-                break
-
-            for col_index, num in enumerate(row.split()):
-                if col_index == 0:
-                    col_numbers.append(num)
-
-                if num == drawn_number:
-                    # Update the game board
-                    row = ' '.join(['x' if x == drawn_number else x for x in row.split()]).strip()
-                    board[row_index] = row
-                    sliced_arrs[board_index] = board
-
+def get_winning_board():
+    for drawn_number in numbers:
+        for board_index, board in enumerate(sliced_arrs):
+            for row_index, row in enumerate(board):
+                for col_index, num in enumerate(row.split()):
+                    if num == drawn_number:
+                        # Update the game board
+                        row = ' '.join(['x' if x == drawn_number else x for x in row.split()]).strip()
+                        board[row_index] = row
+                        sliced_arrs[board_index] = board
             
+                # Win Check
+                if row == 'x x x x x':
+                    remaining_numbers = []
+                    for x in board:
+                        for y in x.split():
+                            if y != 'x':
+                                remaining_numbers.append(y)
+                    solution = sum(map(int, remaining_numbers)) * int(drawn_number)
+                    return solution
 
-        
-
-
-                    
-        
-
+solution = get_winning_board()
+print(solution)
