@@ -27,8 +27,13 @@ wizzard = []
 sliced_arrs = list(chunks(lines, 5))
 
 def get_winning_board():
-    for drawn_number in numbers:
+    solutions = []
+    finished_boards = []
+    for drawn_index, drawn_number in enumerate(numbers):
         for board_index, board in enumerate(sliced_arrs):
+            if board_index in finished_boards:
+                continue
+
             for row_index, row in enumerate(board):
                 for col_index, num in enumerate(row.split()):
                     if num == drawn_number:
@@ -45,7 +50,11 @@ def get_winning_board():
                             if y != 'x':
                                 remaining_numbers.append(y)
                     solution = sum(map(int, remaining_numbers)) * int(drawn_number)
-                    return solution
+                    solutions.append(solution)
+                    finished_boards.append(board_index)
+                    break
+        if drawn_index == len(numbers) - 1:
+            return solutions
 
 solution = get_winning_board()
 print(solution)
